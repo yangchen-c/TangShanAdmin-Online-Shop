@@ -55,6 +55,7 @@ const user = {
       return new Promise((resolve, reject) => {
         loginByUsername(username, userInfo.password).then(response => {
           console.log(response)
+          sessionStorage.setItem('shopId', response.data.data.store.id)
           const id = response.data.data.id
           const token = response.data.data.token
           commit('SET_TOKEN', token)

@@ -36,7 +36,7 @@
         <el-table-column align="center" prop="phone" label="联系电话" width="130" />
         <el-table-column align="center" prop="address" label="家庭住址" width="200" />
         <el-table-column align="center" prop="store.name" label="门店" />
-        <el-table-column align="center" prop="address" label="订单类别" />
+        <!-- <el-table-column align="center" prop="address" label="订单类别" /> -->
         <el-table-column align="center" prop="payment" label="订单金额" />
         <el-table-column align="center" prop="state" label="状态">
           <template slot-scope="scope">
@@ -494,7 +494,8 @@ export default {
           id: ''
         },
         store: {
-          id: ''
+          id: '',
+          name: ''
         },
         remark: '',
         subscribeTime: '',
@@ -659,10 +660,15 @@ export default {
         name: this.listQuery.name !== '' ? this.listQuery.name : undefined
         // id: this.$route.query.id
       }
+      // sessionStorage.getItem('shopId')
       customerList(params, params1)
         .then((response) => {
-          this.tableData = response.data.data.currentList
-          this.tableDataAll = response.data.data.currentList
+          this.tableData = response.data.data.currentList.filter(
+            (el) => el.store.id == sessionStorage.getItem('shopId')
+          )
+          this.tableDataAll = response.data.data.currentList.filter(
+            (el) => el.store.id == sessionStorage.getItem('shopId')
+          )
           this.total = response.data.data.totalRecords
         })
         .catch(() => {
@@ -684,6 +690,7 @@ export default {
       this.form.photographer.id = ''
       this.form.designer.id = ''
       this.form.store.id = ''
+      this.form.store.name = ''
       this.form.dresser.id = ''
       this.form.firstAid.id = ''
       this.form.secondAid.id = ''
@@ -730,6 +737,7 @@ export default {
       this.form.firstAid.id = data.firstAid.id
       this.form.secondAid.id = data.secondAid.id
       this.form.store.id = data.store.id
+      this.form.store.name = data.store.name
       this.form.remark = data.remark
       this.title1 = '编辑客户'
       this.form.subscribeTime = data.subscribeTime
@@ -908,7 +916,7 @@ export default {
           '联系电话',
           '家庭住址',
           '门店',
-          '订单类别',
+          // '订单类别',
           '订单金额',
           '交付日期'
         ]
@@ -917,8 +925,8 @@ export default {
           'name',
           'phone',
           'address',
-          'store',
-          'address',
+          'store.name',
+          // 'address',
           'payment',
           'deliveryTime'
         ]

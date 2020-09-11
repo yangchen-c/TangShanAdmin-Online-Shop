@@ -164,7 +164,9 @@ export default {
     getList() {
       staffList({ name: this.name })
         .then((response) => {
-          this.tableData = response.data.data
+          this.tableData = response.data.data.filter(
+            (el) => el.store.id == sessionStorage.getItem('shopId')
+          )
         })
         .catch(() => {
           this.tableData = []
